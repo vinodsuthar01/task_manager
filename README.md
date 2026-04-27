@@ -46,7 +46,7 @@ Installation
 
 1. Clone the repository
 
-git clone https://github.com/vinodsuthar01/task-manager.git
+git clone https://github.com/vinodsuthar01/task_manager/tree/main
 
 2. Move into project folder
 
