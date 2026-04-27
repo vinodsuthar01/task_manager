@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        /* Reset */
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #222;
+        }
+
+        /* Navbar */
+        nav{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 60px;
+            background: #1e3a8a;
+            color: white;
+        }
+
+        nav h1{
+            font-size: 30px;
+        }
+
+        nav ul{
+            list-style: none;
+            display: flex;
+            gap: 25px;
+        }
+
+        nav ul li a{
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        nav ul li a:hover{
+            color: #facc15;
+        }
+
+        /* Hero Section */
+        .hero{
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(to right, #3b82f6, #06b6d4);
+            color: white;
+        }
+
+        .hero h2{
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        .hero p{
+            font-size: 20px;
+            margin: 20px 0;
+        }
+
+        .hero button{
+            padding: 12px 25px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .hero button:first-child{
+            background: #facc15;
+            color: black;
+        }
+
+        .hero button:last-child{
+            background: white;
+            color: #1e3a8a;
+        }
+
+        .hero button:hover{
+            transform: scale(1.05);
+        }
+
+        /* Cards Section */
+        .card{
+            width: 28%;
+            display: inline-block;
+            vertical-align: top;
+            background: white;
+            margin: 30px 2%;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .card h3{
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #1e3a8a;
+        }
+
+        .card p{
+            font-size: 17px;
+            color: #555;
+        }
+
+        .card:hover{
+            transform: translateY(-8px);
+        }
+
+        /* Summary Blocks */
+        .summary-container{
+            width:95%;
+            margin:25px auto;
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+            gap:20px;
+        }
+
+        /* Common Card */
+        .summary-card{
+            background:white;
+            padding:25px;
+            border-radius:16px;
+            box-shadow:0 8px 20px rgba(0,0,0,0.08);
+            text-align:center;
+            transition:0.3s;
+        }
+
+        .summary-card:hover{
+            transform:translateY(-5px);
+        }
+
+        /* Heading */
+        .summary-card h3{
+            font-size:22px;
+            margin-bottom:12px;
+            color:#1e3a8a;
+        }
+
+        /* Number */
+        .count{
+            font-size:42px;
+            font-weight:bold;
+            margin-bottom:8px;
+        }
+
+        /* Small text */
+        .summary-card small{
+            font-size:14px;
+            color:#666;
+        }
+
+        /* Different Colors */
+        .pending-card{
+            border-top:6px solid #f59e0b;
+        }
+
+        .pending-card .count{
+            color:#f59e0b;
+        }
+
+        .completed-card{
+            border-top:6px solid #22c55e;
+        }
+
+        .completed-card .count{
+            color:#22c55e;
+        }
+
+        .due-card{
+            border-top:6px solid #ef4444;
+        }
+
+        .due-card .count{
+            color:#ef4444;
+        }
+
+        /* Mobile */
+        @media(max-width:600px){
+
+            .summary-card{
+                padding:20px;
+            }
+
+            .summary-card h3{
+                font-size:20px;
+            }
+
+            .count{
+                font-size:34px;
+            }
+        }
+
+        /* Responsive */
+        @media(max-width: 900px){
+            .card{
+                width: 90%;
+                display: block;
+                margin: 20px auto;
+            }
+
+            nav{
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav ul{
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero h2{
+                font-size: 32px;
+            }
+        }
+        .due-wrapper{
+            width:95%;
+            margin:30px auto;
+        }
+
+        /* Header */
+        .due-header{
+            margin-bottom:18px;
+        }
+
+        .due-header h2{
+            color:#1e3a8a;
+            margin-bottom:6px;
+        }
+
+        .due-header p{
+            color:#666;
+            font-size:15px;
+        }
+
+        /* Grid */
+        .due-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+            gap:18px;
+        }
+
+        /* Card */
+        .due-card{
+            background:white;
+            padding:20px;
+            border-radius:16px;
+            box-shadow:0 8px 18px rgba(0,0,0,0.08);
+            border-left:6px solid #ef4444;
+            transition:0.3s;
+        }
+
+        .due-card:hover{
+            transform:translateY(-4px);
+        }
+
+        .due-card h3{
+            color:#111827;
+            margin-bottom:10px;
+            font-size:20px;
+        }
+
+        /* Description */
+        .desc{
+            color:#555;
+            font-size:14px;
+            line-height:1.5;
+            margin-bottom:15px;
+        }
+
+        /* Meta */
+        .meta{
+            display:flex;
+            justify-content:space-between;
+            margin-bottom:16px;
+            font-size:14px;
+        }
+
+        .status{
+            background:#fef3c7;
+            color:#92400e;
+            padding:6px 10px;
+            border-radius:30px;
+        }
+
+        .date{
+            color:#ef4444;
+            font-weight:bold;
+        }
+
+        /* Button */
+        .btn{
+            display:inline-block;
+            background:#2563eb;
+            color:white;
+            padding:9px 14px;
+            border-radius:8px;
+            text-decoration:none;
+        }
+
+        .btn:hover{
+            background:#1d4ed8;
+        }
+
+        /* Empty */
+        .empty-box{
+            background:white;
+            padding:25px;
+            border-radius:14px;
+            text-align:center;
+            color:#666;
+            box-shadow:0 8px 18px rgba(0,0,0,0.06);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>To Do</h1>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="">Features</a></li>
+            {% if request.user.is_authenticated  %}
+                <li><p>{{request.user}}</p></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+            
+        </ul>
+    </nav>
+
+    <div class="hero">
+        <h2>Orgnise Your Work</h2>
+        <h2>Simplify Your Life</h2>
+        <p>Track tasks, meet deadlines, stay productive every day</p>
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'dashboard' %}"><button>Manage Your Task</button></a>
+        {% else %}
+            <a href="{% url 'login' %}"><button>Get Started</button></a>
+        {% endif %}
+        <button>Learn More</button>
+    </div>
+    
+    
+    {% if request.user.is_authenticated %}
+        <div class="summary-container">
+
+            <!-- Pending Tasks -->
+            <div class="summary-card pending-card">
+                <h3>Pending Tasks</h3>
+                <p class="count">{{ pending_task }}</p>
+                <small>Tasks waiting to complete</small>
+            </div>
+
+            <!-- Completed Tasks -->
+            <div class="summary-card completed-card">
+                <h3>Completed Tasks</h3>
+                <p class="count">{{ completed_task }}</p>
+                <small>Finished successfully</small>
+            </div>
+
+           
+
+        </div>
+        <div class="due-wrapper">
+
+            <div class="due-header">
+                <h2>Due Soon Tasks</h2>
+                <p>Tasks due within next 5 days</p>
+            </div>
+
+            {% if due_soon_tasks %}
+
+                <div class="due-grid">
+
+                    {% for task in due_soon_tasks %}
+                    <div class="due-card">
+
+                        <h3>{{ task.title }}</h3>
+
+                        <p class="desc">
+                            {{ task.discription }}
+                        </p>
+
+                        <div class="meta">
+                            <span class="status">{{ task.status }}</span>
+                            <span class="date">{{ task.due_date }}</span>
+                        </div>
+
+                        <div class="action">
+                            <a href="{% url 'mark_done' task.id %}" class="btn">Mark Done</a>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+                    {% else %}
+
+                        <div class="empty-box">
+                            <p>No upcoming due tasks 🎉</p>
+                        </div>
+
+                    {% endif %}
+
+                </div>
+    {% else %}
+        <div class="card">
+            <h3>Easy Task Management</h3>
+            <p>Create and edit tasks quickly.</p>
+
+        </div>
+
+        <div class="card">
+            <h3>Due Date Tracking</h3>
+            <p>Never miss deadlines</p>
+        </div>
+
+        <div class="card">
+            <h3>Progressive monitering</h3>
+            <p>Mark done and stay motivated</p>
+        </div>
+    {% endif %}
+</body>
+</html>

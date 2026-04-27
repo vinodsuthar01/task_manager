@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Task</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#eef2ff,#f8fafc);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+/* Card */
+.card{
+    width:100%;
+    max-width:520px;
+    background:white;
+    padding:35px;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* Heading */
+h1,h2{
+    text-align:center;
+    color:#1e3a8a;
+    margin-bottom:25px;
+}
+
+/* Error Message */
+.err{
+    background:#fee2e2;
+    color:#b91c1c;
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:15px;
+    text-align:center;
+    font-weight:bold;
+}
+
+/* Inputs */
+input,
+select,
+textarea{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    font-size:15px;
+    outline:none;
+    background:#f9fafb;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#2563eb;
+}
+
+textarea{
+    resize:vertical;
+    min-height:110px;
+}
+
+/* Buttons */
+.actions{
+    display:flex;
+    gap:12px;
+    margin-top:10px;
+}
+
+.btn,
+.back-btn{
+    flex:1;
+    text-align:center;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    text-decoration:none;
+    transition:0.3s;
+}
+
+/* Save Button */
+.btn{
+    background:#22c55e;
+    color:white;
+}
+
+.btn:hover{
+    background:#16a34a;
+    transform:translateY(-2px);
+}
+
+/* Back Button */
+.back-btn{
+    background:#ef4444;
+    color:white;
+}
+
+.back-btn:hover{
+    background:#dc2626;
+    transform:translateY(-2px);
+}
+
+/* Mobile */
+@media(max-width:550px){
+
+    .card{
+        padding:25px;
+    }
+
+    .actions{
+        flex-direction:column;
+    }
+
+    h1,h2{
+        font-size:28px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+{% if task %}
+    <h1>Edit Task</h1>
+{% else %}
+    <h2>Add New Task</h2>
+{% endif %}
+
+<form method="post">
+
+{% csrf_token %}
+
+{% for m in messages %}
+<p class="err">{{m}}</p>
+{% endfor %}
+
+<input 
+type="text" 
+name="title" 
+placeholder="Task Title"
+value="{{task.title|default:''}}" 
+required>
+
+<textarea 
+name="discription" 
+placeholder="Task Description"
+required>{{task.discription|default:''}}</textarea>
+
+<select name="status">
+    <option value="Pending" {% if task.status == 'Pending' %}selected{% endif %}>Pending</option>
+    <option value="In Progress" {% if task.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+    <option value="Completed" {% if task.status == 'Completed' %}selected{% endif %}>Completed</option>
+</select>
+
+<select name="priority">
+    <option value="High" {% if task.priority == 'High' %}selected{% endif %}>High Priority</option>
+    <option value="Medium" {% if task.priority == 'Medium' %}selected{% endif %}>Medium Priority</option>
+    <option value="Low" {% if task.priority == 'Low' %}selected{% endif %}>Low Priority</option>
+</select>
+
+<input 
+type="date" 
+name="due_date"
+value="{{task.due_date|date:'Y-m-d'}}"
+required>
+
+<div class="actions">
+
+{% if task %}
+    <button type="submit" class="btn">Update Task</button>
+{% else %}
+    <button type="submit" class="btn">Add Task</button>
+{% endif %}
+
+<a href="{% url 'dashboard' %}" class="back-btn">Go Back</a>
+
+</div>
+
+</form>
+
+</div>
+
+</body>
+</html>

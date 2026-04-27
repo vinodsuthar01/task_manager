@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:#f4f7fb;
+    color:#222;
+}
+
+/* Navbar */
+nav{
+    background:#1e3a8a;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 60px;
+}
+
+nav h2{
+    color:white;
+    font-size:30px;
+}
+
+nav ul{
+    list-style:none;
+    display:flex;
+    align-items:center;
+    gap:22px;
+}
+
+nav ul li a,
+nav ul li p{
+    color:white;
+    text-decoration:none;
+    font-size:17px;
+}
+
+nav ul li a:hover{
+    color:#facc15;
+}
+
+/* Main */
+.main{
+    width:95%;
+    margin:auto;
+    padding:30px 0;
+}
+
+.page-title{
+    text-align:center;
+    color:#1e3a8a;
+    margin-bottom:20px;
+    font-size:34px;
+}
+
+/* Message */
+.succ{
+    background:#d1fae5;
+    color:#065f46;
+    padding:12px;
+    width:50%;
+    margin:10px auto;
+    border-radius:8px;
+    text-align:center;
+    font-weight:bold;
+}
+
+/* Search Box */
+.search-box{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+    margin-bottom:25px;
+}
+
+.search-box form{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+input, select{
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:15px;
+}
+
+.search-input{
+    width:350px;
+}
+
+.btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:10px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    text-decoration:none;
+}
+
+.btn:hover{
+    background:#1d4ed8;
+}
+
+.clear-btn{
+    background:#ef4444;
+}
+
+.clear-btn:hover{
+    background:#dc2626;
+}
+
+/* Table */
+.table-box{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+}
+
+thead{
+    background:#1e3a8a;
+    color:white;
+}
+
+th, td{
+    padding:14px;
+    text-align:center;
+    border-bottom:1px solid #eee;
+}
+
+tr:hover{
+    background:#f8fafc;
+}
+
+.status-btn{
+    font-size:14px;
+    padding:7px 12px;
+    margin-left:8px;
+}
+
+.del-btn{
+    background:#ef4444;
+}
+
+.del-btn:hover{
+    background:#dc2626;
+}
+
+/* Empty */
+.empty{
+    background:white;
+    padding:30px;
+    width:50%;
+    margin:30px auto;
+    border-radius:14px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+    text-align:center;
+    color:#666;
+}
+
+/* Bottom button */
+.add-task{
+    text-align:center;
+    margin-top:25px;
+}
+
+/* Responsive */
+@media(max-width:900px){
+
+    nav{
+        flex-direction:column;
+        gap:15px;
+        padding:20px;
+    }
+
+    nav ul{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    .search-input{
+        width:100%;
+    }
+
+    .succ,
+    .empty{
+        width:95%;
+    }
+
+    .page-title{
+        font-size:28px;
+    }
+
+    table{
+        min-width:750px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <h2>Dashboard</h2>
+
+    <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="">Features</a></li>
+
+        {% if request.user.is_authenticated %}
+            <li><p>{{request.user}}</p></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'register' %}">Register</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+<div class="main">
+
+<h1 class="page-title">My Tasks</h1>
+
+{% for m in messages %}
+<p class="succ">{{m}}</p>
+{% endfor %}
+
+<div class="search-box">
+<form method="get">
+
+<input
+type="text"
+name="q"
+value="{{request.GET.q}}"
+placeholder="Search task..."
+class="search-input">
+
+<select name="status">
+    <option value="">All</option>
+    <option value="Pending" {% if request.GET.status == 'Pending' %}selected{% endif %}>Pending</option>
+    <option value="In Progress" {% if request.GET.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+    <option value="Completed" {% if request.GET.status == 'Completed' %}selected{% endif %}>Done</option>
+</select>
+
+<button type="submit" class="btn">Search</button>
+
+<a href="{% url 'dashboard' %}" class="btn clear-btn">Clear</a>
+
+</form>
+</div>
+
+{% if tasks %}
+
+<div class="table-box">
+<table>
+<thead>
+<tr>
+<th>No.</th>
+<th>Title</th>
+<th>Description</th>
+<th>Status</th>
+<th>Due Date</th>
+<th>Edit</th>
+<th>Delete</th>
+</tr>
+</thead>
+
+<tbody>
+{% for t in tasks %}
+<tr>
+<td>{{forloop.counter}}</td>
+<td>{{t.title}}</td>
+<td>{{t.discription}}</td>
+<td>
+{{t.status}}
+<a href="{% url 'change_status' t.id %}" class="btn status-btn">Change</a>
+</td>
+<td>{{t.due_date}}</td>
+<td>
+<a href="{% url 'edit_task' t.id %}" class="btn">Edit</a>
+</td>
+<td>
+<a href="{% url 'delete_task' t.id %}" class="btn del-btn">Delete</a>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+
+</table>
+</div>
+
+{% else %}
+
+<div class="empty">
+<p>No Task Found</p>
+</div>
+
+{% endif %}
+
+<div class="add-task">
+<a href="{% url 'add_task' %}" class="btn">+ Add New Task</a>
+</div>
+
+</div>
+
+</body>
+</html>
